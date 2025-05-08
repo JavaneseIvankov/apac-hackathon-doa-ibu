@@ -6,6 +6,7 @@ import { Menu } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
 import {
    Sheet,
+   SheetTitle,
    SheetContent,
    SheetTrigger,
 } from '@/shared/components/ui/sheet';
@@ -14,8 +15,8 @@ export default function Header() {
    const [isOpen, setIsOpen] = useState(false);
 
    return (
-      <header className="sticky top-0 z-50 w-full border-b border-accent bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90 ">
-         <div className="container flex h-16 items-center justify-between py-4">
+      <header className="sticky top-0 z-50 w-full border-b border-accent bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-center">
+         <div className="container px-4 flex h-16 items-center justify-between py-4">
             <Link href="/" className="flex items-center gap-2">
                <div className="relative h-8 w-8 overflow-hidden rounded-full bg-primary">
                   <span className="absolute inset-0 flex items-center justify-center text-primary-foreground font-bold">
@@ -60,6 +61,7 @@ export default function Header() {
                   </Button>
                </SheetTrigger>
                <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                  <SheetTitle>Menu</SheetTitle>
                   <nav className="flex flex-col gap-4 mt-8">
                      <Link
                         href="#"
