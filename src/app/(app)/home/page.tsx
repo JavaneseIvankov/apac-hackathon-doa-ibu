@@ -33,7 +33,7 @@ export default function HomePage() {
    }
 
    return (
-      <div className="container py-8 md:px-4 max-w-6xl">
+      <div className="container max-w-6xl">
          <section className="mb-8">
             <h1 className="text-3xl font-bold mb-2">
                Hi, {user?.name?.split(' ')[0]}

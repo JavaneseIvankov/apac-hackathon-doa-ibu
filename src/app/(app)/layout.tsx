@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
          <div className="flex bg-background w-full flex-col md:flex-row">
             <HomeSidebar />
             <HomeNavbar />
-            <main className="flex-1 flex items-center justify-center py-12 px-8">
+            <main className="flex-1 flex justify-center py-18 px-12">
                {children}
             </main>
          </div>
