@@ -1,4 +1,34 @@
-import type { TripPlan } from '@/shared/types/trip';
+import type { TripPlan, TripSummary } from '@/shared/types/trip';
+
+export const mockTrips: TripSummary[] = [
+   {
+      id: 'trip-1',
+      title: 'Weekend in Paris',
+      destination: 'Paris, France',
+      startDate: '2023-06-15',
+      endDate: '2023-06-17',
+      summary: 'A romantic weekend getaway to the City of Light',
+      travelers: 2,
+   },
+   {
+      id: 'trip-2',
+      title: 'Tokyo Adventure',
+      destination: 'Tokyo, Japan',
+      startDate: '2023-07-10',
+      endDate: '2023-07-20',
+      summary: 'Exploring the vibrant streets and culture of Tokyo',
+      travelers: 1,
+   },
+   {
+      id: 'trip-3',
+      title: 'Italian Getaway',
+      destination: 'Italy',
+      startDate: '2023-08-05',
+      endDate: '2023-08-15',
+      summary: 'Food, history, and culture in Rome, Florence, and Venice',
+      travelers: 2,
+   },
+];
 
 export const sampleTrip: TripPlan = {
    id: 'trip-123456',

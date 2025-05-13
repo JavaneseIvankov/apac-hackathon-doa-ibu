@@ -55,3 +55,14 @@ export interface TripPlan {
    createdAt: string;
    updatedAt: string;
 }
+
+export type TripSummary = Pick<
+   TripPlan,
+   | 'id'
+   | 'title'
+   | 'destination'
+   | 'startDate'
+   | 'endDate'
+   | 'summary'
+   | 'travelers'
+>;

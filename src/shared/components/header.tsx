@@ -10,20 +10,16 @@ import {
    SheetContent,
    SheetTrigger,
 } from '@/shared/components/ui/sheet';
+import Brand from './brand';
 
 export default function Header() {
    const [isOpen, setIsOpen] = useState(false);
 
    return (
-      <header className="sticky top-0 z-50 w-full border-b border-accent bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-center">
+      <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-center">
          <div className="container px-4 flex h-16 items-center justify-between py-4">
             <Link href="/" className="flex items-center gap-2">
-               <div className="relative h-8 w-8 overflow-hidden rounded-full bg-primary">
-                  <span className="absolute inset-0 flex items-center justify-center text-primary-foreground font-bold">
-                     G
-                  </span>
-               </div>
-               <span className="text-xl font-bold text-primary">Gemini</span>
+               <Brand />
             </Link>
 
             {/* Desktop Navigation */}
@@ -39,6 +35,7 @@ export default function Header() {
                </Link>
             </nav>
 
+            {/* // TODO:  make it render conditionally based on auth state */}
             {/* Desktop Auth Buttons */}
             <div className="hidden md:flex items-center gap-4">
                <Link href="/login">

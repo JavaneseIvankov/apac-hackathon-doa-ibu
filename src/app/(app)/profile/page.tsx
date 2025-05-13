@@ -1,22 +1,10 @@
 'use client';
 
-// import { useAuth } from '@/features/auth/hooks/useAuth';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ProfileSidebar } from '@/features/profile/components/profile-sidebar';
 import { ProfileTabs } from '@/features/profile/components/profile-tabs';
-
-// HACK: use actual hook
-const useAuth = () => {
-   return {
-      user: {
-         name: 'John Lenon',
-         email: 'johndoe@gmail.com',
-         image: 'https://placehold.co/400',
-      },
-      isLoading: false,
-   };
-};
+import { useAuth } from '@/shared/lib/temp/hooks';
 
 export default function ProfilePage() {
    const { user, isLoading } = useAuth();
@@ -38,7 +26,7 @@ export default function ProfilePage() {
    }
 
    return (
-      <div className="container px-4 min-h-[826px] py-10">
+      <div className="container min-h-[826px]">
          <div className="flex flex-col gap-6">
             <h1 className="text-3xl font-bold">My Profile</h1>
             <div className="grid gap-6 md:grid-cols-[250px_1fr]">

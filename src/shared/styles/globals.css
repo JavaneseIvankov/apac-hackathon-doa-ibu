@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
    --background: oklch(0.98 0.00 286.38);
    --foreground: oklch(0.32 0 0);
@@ -161,4 +163,14 @@
    --text-title: 1.5rem;
    --text-body: 1rem;
    --text-detail: 0.75rem;
+}
+
+@layer base {
+   * {
+      @apply border-border;
+   }
+
+   body {
+      @apply bg-background text-foreground;
+   }
 }
