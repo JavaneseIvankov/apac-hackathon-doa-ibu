@@ -1,5 +1,7 @@
 'use client';
 
+// NOT YET USED...
+
 import {
    Card,
    CardContent,
@@ -11,6 +13,7 @@ import {
 import { Button } from '@/shared/components/ui/button';
 import { Badge } from '@/shared/components/ui/badge';
 import { CalendarDays, MapPin, Users } from 'lucide-react';
+import Image from 'next/image';
 
 interface TripCardProps {
    title: string;
@@ -40,7 +43,7 @@ export function TripCard({
    return (
       <Card className="overflow-hidden">
          <div className="relative h-40">
-            <img
+            <Image
                src={image || '/placeholder.svg'}
                alt={title}
                className="w-full h-full object-cover"
