@@ -12,40 +12,9 @@ import {
 } from '@/shared/components/ui/card';
 import { Badge } from '@/shared/components/ui/badge';
 import { CalendarDays, MapPin, Users, ArrowRight } from 'lucide-react';
-
-// Mock trip data
-const mockTrips = [
-   {
-      id: 'trip-1',
-      title: 'Weekend in Paris',
-      description: 'A romantic weekend getaway to the City of Light',
-      destination: 'Paris, France',
-      date: 'June 15-17, 2023',
-      image: '/placeholder.svg?height=200&width=400',
-      status: 'completed',
-      travelers: 2,
-   },
-   {
-      id: 'trip-2',
-      title: 'Tokyo Adventure',
-      description: 'Exploring the vibrant streets and culture of Tokyo',
-      destination: 'Tokyo, Japan',
-      date: 'July 10-20, 2023',
-      image: '/placeholder.svg?height=200&width=400',
-      status: 'upcoming',
-      travelers: 1,
-   },
-   {
-      id: 'trip-3',
-      title: 'Italian Getaway',
-      description: 'Food, history, and culture in Rome, Florence, and Venice',
-      destination: 'Italy',
-      date: 'August 5-15, 2023',
-      image: '/placeholder.svg?height=200&width=400',
-      status: 'planning',
-      travelers: 2,
-   },
-];
+import { TripList } from '@/features/trips/trip-list';
+import Image from 'next/image';
+import { mockTrips } from '@/shared/data/sample-trip';
 
 export function RecentTrips() {
    const [trips] = useState(mockTrips);
@@ -77,11 +46,7 @@ export function RecentTrips() {
                </div>
             </Card>
          ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-               {trips.map((trip) => (
-                  <TripCard key={trip.id} trip={trip} />
-               ))}
-            </div>
+            <TripList trips={trips} />
          )}
       </div>
    );
@@ -100,11 +65,11 @@ interface TripCardProps {
    };
 }
 
-function TripCard({ trip }: TripCardProps) {
+export function TripCard({ trip }: TripCardProps) {
    return (
       <Card className="overflow-hidden flex flex-col h-full">
          <div className="relative h-40">
-            <img
+            <Image
                src={trip.image || '/placeholder.svg'}
                alt={trip.title}
                className="w-full h-full object-cover"
