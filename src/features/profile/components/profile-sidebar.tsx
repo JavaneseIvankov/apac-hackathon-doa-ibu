@@ -5,7 +5,7 @@ import { User } from '@/shared/types/user';
 
 export function ProfileSidebar({ user }: { user: User }) {
    return (
-      <Card className="h-fit">
+      <Card className="h-fit sticky top-4">
          <CardContent className="p-6 flex flex-col items-center">
             <div className="relative mb-4">
                <ProfileImageUpload

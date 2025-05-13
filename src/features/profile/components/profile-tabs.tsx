@@ -17,7 +17,6 @@ export function ProfileTabs({ user }: { user: User }) {
             <TabsTrigger value="account">Account</TabsTrigger>
             <TabsTrigger value="security">Security</TabsTrigger>
             <TabsTrigger value="preferences">Preferences</TabsTrigger>
-            <TabsTrigger value="trips">My Trips</TabsTrigger>
          </TabsList>
 
          <TabsContent value="account">
@@ -28,9 +27,6 @@ export function ProfileTabs({ user }: { user: User }) {
          </TabsContent>
          <TabsContent value="preferences">
             <PreferencesTab />
-         </TabsContent>
-         <TabsContent value="trips">
-            <TripsTab />
          </TabsContent>
       </Tabs>
    );
