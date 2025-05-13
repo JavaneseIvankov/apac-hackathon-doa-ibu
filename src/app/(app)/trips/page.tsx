@@ -1,5 +1,5 @@
 import { Button } from '@/shared/components/ui/button';
-import TripCard from '@/features/trips/TripCard';
+import TripCard from '@/features/trips/trip-card';
 import { sampleTrip } from '@/shared/data/sample-trip';
 
 export default function TripsPage() {
