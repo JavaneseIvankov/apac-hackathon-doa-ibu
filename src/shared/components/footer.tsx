@@ -3,7 +3,7 @@ import Brand from './brand';
 
 export default function Footer() {
    return (
-      <footer className="w-full border-t border-accent py-6 md:py-8 flex justify-center">
+      <footer className="w-full border-t border-border py-6 md:py-8 flex justify-center">
          <div className="container px-4 sm:px-6 flex flex-col md:flex-row md:items-center md:justify-between">
             <Brand />
             <p className="text-xs text-muted-foreground order-3 md:order-2">

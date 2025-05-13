@@ -16,7 +16,7 @@ export default function Header() {
    const [isOpen, setIsOpen] = useState(false);
 
    return (
-      <header className="sticky top-0 z-50 w-full border-b border-accent bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-center">
+      <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-center">
          <div className="container px-4 flex h-16 items-center justify-between py-4">
             <Link href="/" className="flex items-center gap-2">
                <Brand />
@@ -35,6 +35,7 @@ export default function Header() {
                </Link>
             </nav>
 
+            {/* // TODO:  make it render conditionally based on auth state */}
             {/* Desktop Auth Buttons */}
             <div className="hidden md:flex items-center gap-4">
                <Link href="/login">
