@@ -1,7 +1,5 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { Button } from '@/shared/components/ui/button';
-import { Input } from '@/shared/components/ui/input';
 import {
    Card,
    CardContent,
@@ -10,7 +8,7 @@ import {
    CardHeader,
    CardTitle,
 } from '@/shared/components/ui/card';
-import { Label } from '@/shared/components/ui/label';
+import { LoginForm } from './LoginForm';
 
 export const metadata: Metadata = {
    title: 'Login | Gemini Travel',
@@ -27,32 +25,15 @@ export default function LoginPage() {
             </CardDescription>
          </CardHeader>
          <CardContent>
-            <div className="space-y-4">
-               <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                     id="email"
-                     type="email"
-                     placeholder="hello@example.com"
-                     required
-                  />
-               </div>
-               <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                     <Label htmlFor="password">Password</Label>
-                     <Link
-                        href="/forgot-password"
-                        className="text-sm text-primary hover:underline"
-                     >
-                        Forgot password?
-                     </Link>
-                  </div>
-                  <Input id="password" type="password" required />
-               </div>
-               <Button type="submit" className="w-full">
-                  Log in
-               </Button>
+            <div className="space-y-2 mb-2 flex items-center justify-end">
+               <Link
+                  href="/forgot-password"
+                  className="text-sm text-primary hover:underline"
+               >
+                  Forgot password?
+               </Link>
             </div>
+            <LoginForm />
          </CardContent>
          <CardFooter className="flex flex-col space-y-4">
             <div className="text-sm text-muted-foreground text-center">
