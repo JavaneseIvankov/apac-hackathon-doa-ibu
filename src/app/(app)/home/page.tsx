@@ -2,14 +2,20 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { HomeSidebar } from '@/features/home/home-sidebar';
 import { TripInput } from '@/features/home/trip-input';
 import { RecentTrips } from '@/features/home/recent-trips';
 import { Loader2 } from 'lucide-react';
-import { useAuth } from '@/shared/lib/temp/hooks';
+import { useSessionQuery } from '@/features/session-manager/query';
 
 export default function HomePage() {
-   const { user, isLoading, isAuthenticated } = useAuth();
+   const { data: session, isLoading } = useSessionQuery();
+   const isAuthenticated = session?.isLoggedIn;
+   // FIXME: use dedicated component for fetching user image
+   const user = {
+      name: session?.name,
+      image: 'https://placehold.co/400',
+      email: session?.email,
+   };
    const router = useRouter();
 
    // Redirect to login if not authenticated
