@@ -11,9 +11,12 @@ import {
    SheetTrigger,
 } from '@/shared/components/ui/sheet';
 import Brand from './brand';
+import { useSessionQuery } from '@/features/session-manager/query';
 
 export default function Header() {
    const [isOpen, setIsOpen] = useState(false);
+   const { data: session } = useSessionQuery();
+   const isLoggedIn = session?.isLoggedIn ?? false;
 
    return (
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-center">
@@ -38,16 +41,26 @@ export default function Header() {
             {/* // TODO:  make it render conditionally based on auth state */}
             {/* Desktop Auth Buttons */}
             <div className="hidden md:flex items-center gap-4">
-               <Link href="/login">
-                  <Button variant="ghost" className="text-sm font-medium">
-                     Log in
-                  </Button>
-               </Link>
-               <Link href="/register">
-                  <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                     Register
-                  </Button>
-               </Link>
+               {isLoggedIn ? (
+                  <Link href="/home">
+                     <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                        Home
+                     </Button>
+                  </Link>
+               ) : (
+                  <>
+                     <Link href="/login">
+                        <Button variant="ghost" className="text-sm font-medium">
+                           Log in
+                        </Button>
+                     </Link>
+                     <Link href="/register">
+                        <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                           Register
+                        </Button>
+                     </Link>
+                  </>
+               )}
             </div>
 
             {/* Mobile Menu */}
@@ -82,18 +95,32 @@ export default function Header() {
                         About Us
                      </Link>
                      <div className="h-px bg-border my-4" />
-                     <Link
-                        href="/login"
-                        className="text-lg font-medium hover:text-primary"
-                        onClick={() => setIsOpen(false)}
-                     >
-                        Log in
-                     </Link>
-                     <Link href="/register" onClick={() => setIsOpen(false)}>
-                        <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                           Register
-                        </Button>
-                     </Link>
+
+                     {isLoggedIn ? (
+                        <Link href="/home">
+                           <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                              Home
+                           </Button>
+                        </Link>
+                     ) : (
+                        <>
+                           <Link
+                              href="/login"
+                              className="text-lg font-medium hover:text-primary"
+                              onClick={() => setIsOpen(false)}
+                           >
+                              Log in
+                           </Link>
+                           <Link
+                              href="/register"
+                              onClick={() => setIsOpen(false)}
+                           >
+                              <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                                 Register
+                              </Button>
+                           </Link>
+                        </>
+                     )}
                   </nav>
                </SheetContent>
             </Sheet>

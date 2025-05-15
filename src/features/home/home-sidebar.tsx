@@ -10,7 +10,6 @@ import {
    AvatarImage,
 } from '@/shared/components/ui/avatar';
 import {
-   SidebarProvider,
    Sidebar,
    SidebarHeader,
    SidebarContent,
@@ -22,12 +21,22 @@ import {
    useSidebar,
 } from '@/shared/components/ui/sidebar';
 import { Home, Map, User, LogOut, Compass, Heart, Search } from 'lucide-react';
-import { useAuth } from '@/shared/lib/temp/hooks';
+import { useSessionQuery } from '../session-manager/query';
+import { useLogoutMutation } from '../auth/query';
 
 export function HomeSidebar() {
-   const { user, logout } = useAuth();
+   const { data: session } = useSessionQuery();
+   const { mutate: logout } = useLogoutMutation();
+   // const { user, logout } = useAuth();
    const pathname = usePathname();
    const { isMobile } = useSidebar();
+
+   // HACK: use dedicated component to fetch user image
+   const user = {
+      name: session?.name,
+      image: 'https://placehold.co/400',
+      email: session?.email,
+   };
 
    // Get user initials for avatar
    const getInitials = (name: string) => {
@@ -144,7 +153,7 @@ export function HomeSidebar() {
             <Button
                variant="outline"
                className="w-full justify-start"
-               onClick={logout}
+               onClick={() => logout()}
             >
                <LogOut className="h-4 w-4 mr-2" />
                <span>Log out</span>
