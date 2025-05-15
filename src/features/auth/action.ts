@@ -8,20 +8,31 @@ import {
    TVerifyOTPRequest,
    TVerifyOTPResponse,
    TLoginRequest,
+   TLoginResponse,
+   TRegisterResponse,
 } from './dto';
 
 export const login = async (payload: TLoginRequest) => {
-   const res = await fetchApi<TLoginRequest>(`${env.API_URL}/api/v1/login`, {
+   const res = await fetchApi<TLoginResponse>(`${env.API_URL}/auth/login`, {
+      method: 'POST',
       body: JSON.stringify(payload),
+      credentials: 'include',
    });
+   console.log(JSON.stringify(payload));
    return res;
 };
 
+// This will not actually register the user,
+// it will return message that otp has been sent to the user's email
+// after that the user needs to fill otp,
+// so you may call this as sendOTP(...)
 export const register = async (payload: TRegisterRequest) => {
-   const res = await fetchApi<TRegisterRequest>(
-      `${env.API_URL}/api/v1/register`,
+   const res = await fetchApi<TRegisterResponse>(
+      `${env.API_URL}/auth/register`,
       {
+         method: 'POST',
          body: JSON.stringify(payload),
+         credentials: 'include',
       }
    );
    return res;
@@ -29,9 +40,11 @@ export const register = async (payload: TRegisterRequest) => {
 
 export const verifyOTP = async (payload: TVerifyOTPRequest) => {
    const res = await fetchApi<TVerifyOTPResponse>(
-      `${env.API_URL}/api/v1/verify-otp`,
+      `${env.API_URL}/auth/verify-otp`,
       {
+         method: 'POST',
          body: JSON.stringify(payload),
+         credentials: 'include',
       }
    );
    return res;

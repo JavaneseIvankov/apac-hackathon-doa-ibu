@@ -11,12 +11,13 @@ export type TLoginRequest = z.infer<typeof TLoginSchema>;
 
 export interface TLoginResponse extends BaseApiResponse {
    payload: {
-      accessToken: string;
-      refreshToken: string;
+      access_token: string;
+      refresh_token: string;
    };
 }
 
 export const TRegisterSchema = z.object({
+   name: z.string().min(3),
    email: z.string().email('Must be a valid email'),
    password: z.string().min(8),
 });
@@ -34,7 +35,7 @@ export type TVerifyOTPRequest = z.infer<typeof TVerifyOTPSchema>;
 
 export interface TVerifyOTPResponse extends BaseApiResponse {
    payload: {
-      accessToken: string;
-      refreshToken: string;
+      access_token: string;
+      refresh_token: string;
    };
 }
