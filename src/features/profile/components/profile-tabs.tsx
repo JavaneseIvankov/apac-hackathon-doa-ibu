@@ -7,7 +7,6 @@ import {
 import { AccountTab } from './tabs/account-tab';
 import { SecurityTab } from './tabs/security-tab';
 import { PreferencesTab } from './tabs/preferences-tab';
-import { TripsTab } from './tabs/trips-tab';
 import { User } from '@/shared/types/user';
 
 export function ProfileTabs({ user }: { user: User }) {
