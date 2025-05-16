@@ -9,7 +9,7 @@ export function ProfileCard({ user }: { user: User }) {
          <CardContent className="p-6 flex flex-col items-center">
             <div className="relative mb-4">
                <ProfileImageUpload
-                  currentImage={user?.image}
+                  currentImage={user?.photo_url}
                   name={user?.name || 'User'}
                   onImageUpload={async (file: File) => {
                      console.log('Uploading file:', file);

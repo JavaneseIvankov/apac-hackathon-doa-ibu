@@ -1,6 +1,16 @@
 import { BaseApiResponse } from '@/shared/lib/api/api';
 import { z } from 'zod';
 
+export const preferencesSchema = z.object({
+   travelStyle: z.string(),
+   interests: z.array(z.string()).max(4, 'You can select up to 4 interests.'),
+   accommodations: z.array(z.string()),
+   tripDuration: z.string(),
+   tripBudget: z.string(),
+});
+
+export type PreferencesFormValues = z.infer<typeof preferencesSchema>;
+
 export const TLoginSchema = z.object({
    email: z.string().email('Must be a valid email!'),
    password: z.string().min(8),

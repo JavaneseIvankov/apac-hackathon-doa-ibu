@@ -21,7 +21,7 @@ import {
    useSidebar,
 } from '@/shared/components/ui/sidebar';
 import { Home, Map, User, LogOut, Compass, Heart, Search } from 'lucide-react';
-import { useSessionQuery } from '../session-manager/query';
+import { useGetProfileQuery } from '../profile/query';
 import { useLogoutMutation } from '../auth/query';
 
 export function HomeSidebar() {
@@ -29,13 +29,16 @@ export function HomeSidebar() {
    const pathname = usePathname();
    const { isMobile } = useSidebar();
 
-   // HACK: use dedicated component to fetch user image
-   const { data: session } = useSessionQuery();
+   // Use profile query to fetch user info
+   const { data } = useGetProfileQuery();
    const { mutate: logout } = useLogoutMutation();
+
+   if (!data?.ok) return <h3>{'Someting went wrong :('}</h3>;
+
    const user = {
-      name: session?.name,
-      image: 'https://placehold.co/400',
-      email: session?.email,
+      name: data?.data.payload.user.name,
+      image: data?.data.payload.user.photo_url || 'https://placehold.co/400',
+      email: data?.data.payload.user.email,
    };
 
    // Get user initials for avatar

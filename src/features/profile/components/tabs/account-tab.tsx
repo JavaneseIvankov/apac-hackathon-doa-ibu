@@ -15,6 +15,7 @@ import { Alert, AlertDescription } from '@/shared/components/ui/alert';
 import { Check, X, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { User } from '@/shared/types/user';
+import { useEditProfileMutation } from '../../query';
 
 // Profile form schema
 const profileSchema = z.object({
@@ -25,9 +26,10 @@ const profileSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
 export function AccountTab({ user }: { user: User }) {
-   const [isUpdating, setIsUpdating] = useState(false);
    const [updateSuccess, setUpdateSuccess] = useState(false);
    const [updateError, setUpdateError] = useState<string | null>(null);
+
+   const editProfileMutation = useEditProfileMutation();
 
    const {
       register,
@@ -42,16 +44,26 @@ export function AccountTab({ user }: { user: User }) {
    });
 
    const onSubmit = (data: ProfileFormValues) => {
-      setIsUpdating(true);
       setUpdateSuccess(false);
       setUpdateError(null);
 
-      // Simulate API call
-      setTimeout(() => {
-         setIsUpdating(false);
-         setUpdateSuccess(true);
-         console.log('Profile data:', data);
-      }, 1000);
+      editProfileMutation.mutate(
+         {
+            name: data.name,
+         },
+         {
+            onSuccess: (data) => {
+               if (data && 'ok' in data && data.ok) {
+                  setUpdateSuccess(true);
+               } else {
+                  setUpdateError(data?.message || 'Failed to update profile');
+               }
+            },
+            onError: (err: Error) => {
+               setUpdateError(err?.message || 'Failed to update profile');
+            },
+         }
+      );
    };
 
    return (
@@ -88,12 +100,13 @@ export function AccountTab({ user }: { user: User }) {
                </div>
                <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" {...register('email')} />
-                  {errors.email && (
-                     <p className="text-sm text-destructive">
-                        {errors.email.message}
-                     </p>
-                  )}
+                  <Input
+                     id="email"
+                     type="email"
+                     value={user?.email || ''}
+                     readOnly
+                     tabIndex={-1}
+                  />
                </div>
                {/* <div className="space-y-2">
                   <Label htmlFor="phone">Phone number</Label>
@@ -107,8 +120,11 @@ export function AccountTab({ user }: { user: User }) {
                   <Label htmlFor="bio">Bio</Label>
                   <Input id="bio" {...register('bio')} />
                </div> */}
-               <Button type="submit" disabled={isUpdating}>
-                  {isUpdating ? (
+               <Button
+                  type="submit"
+                  disabled={editProfileMutation.status === 'pending'}
+               >
+                  {editProfileMutation.status === 'pending' ? (
                      <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving
                         changes...

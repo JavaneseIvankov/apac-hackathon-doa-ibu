@@ -1,16 +1,14 @@
 'use client';
 
 import { Loader2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { ProfileSidebar } from '@/features/profile/components/profile-sidebar';
 import { ProfileTabs } from '@/features/profile/components/profile-tabs';
-import { useAuth } from '@/shared/lib/temp/hooks';
+import { useGetProfileQuery } from '@/features/profile/query';
+import { User } from '@/shared/types/user';
 
 export default function ProfilePage() {
-   const { user, isLoading } = useAuth();
-   const router = useRouter();
+   const { data, isLoading } = useGetProfileQuery();
 
-   // If loading or no user (not authenticated), show loading state
    if (isLoading) {
       return (
          <div className="flex h-[calc(100vh-64px)] items-center justify-center">
@@ -19,11 +17,20 @@ export default function ProfilePage() {
       );
    }
 
-   // If not authenticated after loading, redirect to login
-   if (!user && !isLoading) {
-      router.push('/login');
-      return null;
+   if (!data?.ok) {
+      return (
+         <div className="container min-h-[826px]">
+            <div className="flex flex-col gap-6">
+               <h1 className="text-3xl font-bold">My Profile</h1>
+               <div className="flex justify-center items-center">
+                  <h3>Something went wrong :(</h3>
+               </div>
+            </div>
+         </div>
+      );
    }
+
+   const user: User = data.data.payload.user;
 
    return (
       <div className="container min-h-[826px]">
