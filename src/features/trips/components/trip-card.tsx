@@ -33,8 +33,8 @@ export default function TripCard({ trip }: TripCardProps) {
                <div className="flex items-center gap-2">
                   <CalendarIcon className="h-4 w-4 text-primary" />
                   <span>
-                     {format(parseISO(trip.startDate), 'MMM d')} -{' '}
-                     {format(parseISO(trip.endDate), 'MMM d, yyyy')}
+                     {format(parseISO(trip.start_date), 'MMM d')} -{' '}
+                     {format(parseISO(trip.end_date), 'MMM d, yyyy')}
                   </span>
                </div>
                <div className="flex items-center gap-2">

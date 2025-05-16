@@ -84,9 +84,6 @@ export default async function TripPlanPage() {
                      <Button size="sm">Download PDF</Button>
                   </div>
                </div>
-               <div className="mt-6">
-                  <p className="text-muted-foreground">{trip.summary}</p>
-               </div>
             </div>
 
             {/* Trip Overview Card */}
