@@ -27,9 +27,10 @@ export async function middleware(req: NextRequest) {
    const isProtected = PROTECTED_ROUTES.some((route) =>
       pathname.startsWith(route)
    );
-   const isGuestOnly = GUEST_ONLY_ROUTES.some((route) =>
-      pathname.startsWith(route)
-   );
+
+   // const isGuestOnly = GUEST_ONLY_ROUTES.some((route) =>
+   //    pathname.startsWith(route)
+   // );
 
    if (!session?.isLoggedIn && isProtected) {
       logger.warn(
@@ -41,15 +42,15 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL('/login', req.nextUrl));
    }
 
-   if (session?.isLoggedIn && isGuestOnly) {
-      logger.info(
-         '[middleware] Authenticated user trying to access guest-only route. Redirecting to /home',
-         {
-            pathname,
-         }
-      );
-      return NextResponse.redirect(new URL('/home', req.nextUrl));
-   }
+   // if (session?.isLoggedIn && isGuestOnly) {
+   //    logger.info(
+   //       '[middleware] Authenticated user trying to access guest-only route. Redirecting to /home',
+   //       {
+   //          pathname,
+   //       }
+   //    );
+   //    return NextResponse.redirect(new URL('/home', req.nextUrl));
+   // }
 
    logger.debug(
       '[middleware] Request passed all checks, proceeding to next handler',
