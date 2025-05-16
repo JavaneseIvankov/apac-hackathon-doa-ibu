@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { HomeSidebar } from '@/features/home/home-sidebar';
 import { TripInput } from '@/features/home/trip-input';
 import { RecentTrips } from '@/features/home/recent-trips';
 import { Loader2 } from 'lucide-react';

@@ -10,7 +10,6 @@ import {
    AvatarImage,
 } from '@/shared/components/ui/avatar';
 import {
-   SidebarProvider,
    Sidebar,
    SidebarHeader,
    SidebarContent,
