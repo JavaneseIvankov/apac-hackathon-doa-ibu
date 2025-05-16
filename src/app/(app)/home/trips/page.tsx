@@ -1,6 +1,6 @@
 import { Button } from '@/shared/components/ui/button';
 import { sampleTrip } from '@/shared/data/sample-trip';
-import { TripList } from '@/features/trips/trip-list';
+import { TripList } from '@/features/trips/components/trip-list';
 
 export default function TripsPage() {
    const trips = [

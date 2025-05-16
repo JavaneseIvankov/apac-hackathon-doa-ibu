@@ -12,7 +12,7 @@ import {
 } from '@/shared/components/ui/card';
 import { Badge } from '@/shared/components/ui/badge';
 import { CalendarDays, MapPin, Users, ArrowRight } from 'lucide-react';
-import { TripList } from '@/features/trips/trip-list';
+import { TripList } from '@/features/trips/components/trip-list';
 import Image from 'next/image';
 import { mockTrips } from '@/shared/data/sample-trip';
 
