@@ -19,8 +19,7 @@ import { Label } from '@/shared/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
 import { useState } from 'react';
 import { PreferencesFormValues, preferencesSchema } from '@/features/auth/dto';
-import { useAddPreferencesMutation, useGetProfileQuery } from '../query';
-import { Loader2 } from 'lucide-react';
+import { useAddPreferencesMutation } from '../query';
 
 function TravelStyle({ control }: { control: Control<PreferencesFormValues> }) {
    return (
