@@ -48,7 +48,7 @@ export default function TripCard({ trip }: TripCardProps) {
             </div>
          </CardContent>
          <CardFooter>
-            <Link href={`/trips/${trip.id}`} className="w-full">
+            <Link href={`/home/trips/${trip.id}`} className="w-full">
                <Button variant="outline" className="w-full justify-between">
                   View Trip
                   <ArrowRightIcon className="h-4 w-4" />

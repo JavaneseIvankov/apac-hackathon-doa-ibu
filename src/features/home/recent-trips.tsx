@@ -24,7 +24,7 @@ export function RecentTrips() {
          <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold">Your Trips</h2>
             <Button variant="outline" size="sm" asChild>
-               <Link href="/trips" className="flex items-center gap-1">
+               <Link href="/home/trips" className="flex items-center gap-1">
                   View all <ArrowRight className="h-4 w-4" />
                </Link>
             </Button>
@@ -118,7 +118,7 @@ export function TripCard({ trip }: TripCardProps) {
          </CardContent>
          <CardFooter className="pt-2 border-t">
             <Button variant="outline" size="sm" className="w-full" asChild>
-               <Link href={`/trips/${trip.id}`}>View details</Link>
+               <Link href={`/home/trips/${trip.id}`}>View details</Link>
             </Button>
          </CardFooter>
       </Card>

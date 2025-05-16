@@ -25,13 +25,13 @@ import { useSessionQuery } from '../session-manager/query';
 import { useLogoutMutation } from '../auth/query';
 
 export function HomeSidebar() {
-   const { data: session } = useSessionQuery();
-   const { mutate: logout } = useLogoutMutation();
    // const { user, logout } = useAuth();
    const pathname = usePathname();
    const { isMobile } = useSidebar();
 
    // HACK: use dedicated component to fetch user image
+   const { data: session } = useSessionQuery();
+   const { mutate: logout } = useLogoutMutation();
    const user = {
       name: session?.name,
       image: 'https://placehold.co/400',
@@ -97,7 +97,7 @@ export function HomeSidebar() {
                </SidebarMenuItem>
                <SidebarMenuItem>
                   <SidebarMenuButton asChild isActive={pathname === '/trips'}>
-                     <Link href="/trips">
+                     <Link href="/home/trips">
                         <Map className="h-4 w-4 mr-2" />
                         <span>Your Trips</span>
                      </Link>
@@ -105,7 +105,7 @@ export function HomeSidebar() {
                </SidebarMenuItem>
                <SidebarMenuItem>
                   <SidebarMenuButton asChild isActive={pathname === '/explore'}>
-                     <Link href="/explore">
+                     <Link href="/home/explore">
                         <Compass className="h-4 w-4 mr-2" />
                         <span>Explore</span>
                      </Link>
@@ -113,7 +113,7 @@ export function HomeSidebar() {
                </SidebarMenuItem>
                <SidebarMenuItem>
                   <SidebarMenuButton asChild isActive={pathname === '/saved'}>
-                     <Link href="/saved">
+                     <Link href="/home/saved">
                         <Heart className="h-4 w-4 mr-2" />
                         <span>Saved</span>
                      </Link>
@@ -121,7 +121,7 @@ export function HomeSidebar() {
                </SidebarMenuItem>
                <SidebarMenuItem>
                   <SidebarMenuButton asChild isActive={pathname === '/search'}>
-                     <Link href="/search">
+                     <Link href="/home/search">
                         <Search className="h-4 w-4 mr-2" />
                         <span>Search</span>
                      </Link>
@@ -139,7 +139,7 @@ export function HomeSidebar() {
                         asChild
                         isActive={pathname === '/profile'}
                      >
-                        <Link href="/profile">
+                        <Link href="/home/profile">
                            <User className="h-4 w-4 mr-2" />
                            <span>Profile & Settings</span>
                         </Link>

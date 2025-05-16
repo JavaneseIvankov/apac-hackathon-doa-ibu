@@ -8,7 +8,7 @@ import {
    CardHeader,
    CardTitle,
 } from '@/shared/components/ui/card';
-import { LoginForm } from './LoginForm';
+import { LoginForm } from '@/features/auth/components/LoginForm';
 
 export const metadata: Metadata = {
    title: 'Login | Gemini Travel',
