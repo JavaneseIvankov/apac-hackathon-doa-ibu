@@ -3,7 +3,6 @@ import { getSession } from './features/session-manager/action';
 import logger from './shared/lib/logger/logger';
 
 const PROTECTED_ROUTES = ['/home'];
-const GUEST_ONLY_ROUTES = ['/login', '/register'];
 const DEV_ONLY_ROUTES = ['/design-system'];
 
 export async function middleware(req: NextRequest) {
@@ -27,10 +26,6 @@ export async function middleware(req: NextRequest) {
    const isProtected = PROTECTED_ROUTES.some((route) =>
       pathname.startsWith(route)
    );
-   const isGuestOnly = GUEST_ONLY_ROUTES.some((route) =>
-      pathname.startsWith(route)
-   );
-
    if (!session?.isLoggedIn && isProtected) {
       logger.warn(
          '[middleware] Unauthenticated user trying to access protected route. Redirecting to /login',
@@ -39,16 +34,6 @@ export async function middleware(req: NextRequest) {
          }
       );
       return NextResponse.redirect(new URL('/login', req.nextUrl));
-   }
-
-   if (session?.isLoggedIn && isGuestOnly) {
-      logger.info(
-         '[middleware] Authenticated user trying to access guest-only route. Redirecting to /home',
-         {
-            pathname,
-         }
-      );
-      return NextResponse.redirect(new URL('/home', req.nextUrl));
    }
 
    logger.debug(
