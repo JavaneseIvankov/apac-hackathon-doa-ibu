@@ -19,35 +19,36 @@ export async function middleware(req: NextRequest) {
    if (isDevOnly && process.env.NODE_ENV !== 'development') {
       logger.warn(
          '[middleware] Attempt to access dev-only route in non-dev environment',
-         {
-            pathname,
-         }
+         { pathname }
       );
       return NextResponse.redirect(new URL('/', req.nextUrl));
    }
 
-   // Redirect to login page if user is not logged in
-   if (!session?.isLoggedIn) {
-      logger.warn('[middleware] User not logged in, redirecting to /login', {
-         pathname,
-      });
+   const isProtected = PROTECTED_ROUTES.some((route) =>
+      pathname.startsWith(route)
+   );
+   const isGuestOnly = GUEST_ONLY_ROUTES.some((route) =>
+      pathname.startsWith(route)
+   );
+
+   if (!session?.isLoggedIn && isProtected) {
+      logger.warn(
+         '[middleware] Unauthenticated user trying to access protected route. Redirecting to /login',
+         {
+            pathname,
+         }
+      );
       return NextResponse.redirect(new URL('/login', req.nextUrl));
    }
 
-   // Redirect to home page if user is logged in and trying to access GUEST_ONLY_ROUTES
-   if (session?.isLoggedIn) {
-      const isGuestOnly = GUEST_ONLY_ROUTES.some((route) =>
-         pathname.startsWith(route)
+   if (session?.isLoggedIn && isGuestOnly) {
+      logger.info(
+         '[middleware] Authenticated user trying to access guest-only route. Redirecting to /home',
+         {
+            pathname,
+         }
       );
-      if (isGuestOnly) {
-         logger.info(
-            '[middleware] Logged-in user attempting to access guest-only route, redirecting to /home',
-            {
-               pathname,
-            }
-         );
-         return NextResponse.redirect(new URL('/home', req.nextUrl));
-      }
+      return NextResponse.redirect(new URL('/home', req.nextUrl));
    }
 
    logger.debug(
