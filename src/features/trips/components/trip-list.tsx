@@ -1,5 +1,5 @@
 import { TripSummary } from '@/shared/types/trip';
-import TripCard from '@/features/trips/trip-card';
+import TripCard from '@/features/trips/components/trip-card';
 
 type TripListProps = {
    trips: TripSummary[];
