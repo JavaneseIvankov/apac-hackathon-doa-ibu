@@ -10,6 +10,7 @@ import { Label } from '@/shared/components/ui/label';
 import { Checkbox } from '@/shared/components/ui/checkbox';
 import { useState } from 'react';
 import { useLoginMutation } from '@/features/auth/query';
+import { PasswordInput } from '@/shared/components/ui/password-input';
 
 type TLoginForm = z.infer<typeof TLoginSchema>;
 
@@ -36,7 +37,6 @@ export function LoginForm() {
          await loginMutation.mutateAsync(data);
          // eslint-disable-next-line
       } catch (e: any) {
-         // Prefer error from mutation, fallback to generic
          setFormError(
             (e?.response?.data?.message as string) ||
                e?.message ||
@@ -66,12 +66,12 @@ export function LoginForm() {
                <Label htmlFor="password">Password</Label>
                {/* The forgot password link is handled in the parent */}
             </div>
-            <Input
+            <PasswordInput
                id="password"
-               type="password"
                autoComplete="current-password"
                {...register('password')}
                aria-invalid={!!errors.password}
+               placeholder="********"
             />
             {errors.password && (
                <p className="text-sm text-red-500">{errors.password.message}</p>

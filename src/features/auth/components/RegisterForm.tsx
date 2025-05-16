@@ -10,6 +10,7 @@ import { Label } from '@/shared/components/ui/label';
 import { Checkbox } from '@/shared/components/ui/checkbox';
 import { useState } from 'react';
 import { useRegisterMutation } from '@/features/auth/query';
+import { PasswordInput } from '@/shared/components/ui/password-input';
 
 const RegisterFormSchema = TRegisterSchema.extend({
    confirmPassword: z.string().min(8, 'Password must be at least 8 characters'),
@@ -42,27 +43,6 @@ export function RegisterForm() {
    const [formError, setFormError] = useState<string | null>(null);
    const { mutate: mutateRegister, isPending } = useRegisterMutation();
 
-   function isErrorWithMessage(error: unknown): error is { message: string } {
-      return (
-         typeof error === 'object' &&
-         error !== null &&
-         'message' in error &&
-         typeof (error as { message: unknown }).message === 'string'
-      );
-   }
-
-   function isErrorWithResponseMessage(
-      error: unknown
-   ): error is { response: { data: { message: string } } } {
-      return (
-         typeof error === 'object' &&
-         error !== null &&
-         'response' in error &&
-         // eslint-disable-next-line
-         typeof (error as any).response?.data?.message === 'string'
-      );
-   }
-
    const handleValidSubmit = async (data: TRegisterForm) => {
       setFormError(null);
       try {
@@ -73,9 +53,7 @@ export function RegisterForm() {
          });
       } catch (e: unknown) {
          let message = 'Registration failed';
-         if (isErrorWithResponseMessage(e)) {
-            message = e.response.data.message;
-         } else if (isErrorWithMessage(e)) {
+         if (e instanceof Error) {
             message = e.message;
          }
          setFormError(message);
@@ -112,10 +90,10 @@ export function RegisterForm() {
          </div>
          <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input
+            <PasswordInput
                id="password"
-               type="password"
                autoComplete="new-password"
+               placeholder="********"
                {...register('password')}
                aria-invalid={!!errors.password}
             />
@@ -125,10 +103,10 @@ export function RegisterForm() {
          </div>
          <div className="space-y-2">
             <Label htmlFor="confirmPassword">Confirm password</Label>
-            <Input
+            <PasswordInput
                id="confirmPassword"
-               type="password"
                autoComplete="new-password"
+               placeholder="********"
                {...register('confirmPassword')}
                aria-invalid={!!errors.confirmPassword}
             />
