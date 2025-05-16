@@ -1,13 +1,14 @@
 import { createSession, getSession } from '@/features/session-manager/action';
 import type { TApiResponse } from './api';
 import logger from '../logger/logger';
+import { env } from '../env/env';
 
 type TRefreshTokenResponse = {
    status_code: number;
    message: string;
    payload: {
-      accessToken: string;
-      refreshToken: string;
+      access_token: string;
+      refresh_token: string;
    };
 };
 
@@ -20,12 +21,15 @@ export async function refreshAccessToken(): Promise<boolean> {
    }
 
    try {
-      const res = await fetch('/api/v1/auth/refresh-token', {
-         method: 'GET',
+      const res = await fetch(`${env.API_URL}/auth/refresh-token`, {
+         method: 'POST',
          headers: {
-            Authorization: `Bearer ${session.accessToken}`,
+            'Content-Type': 'application/json',
+            // Authorization: `Bearer ${session.accessToken}`,
          },
-         credentials: 'include',
+         body: JSON.stringify({
+            refresh_token: session.refreshToken,
+         }),
       });
 
       const isJson = res.headers
@@ -39,12 +43,16 @@ export async function refreshAccessToken(): Promise<boolean> {
       });
 
       if (!res.ok) {
-         logger.warn('[refreshAccessToken] Refresh token request failed');
+         logger.warn(
+            '[refreshAccessToken] Refresh token request failed ' +
+               res.statusText
+         );
          return false;
       }
 
-      const { accessToken, refreshToken } = (data as TRefreshTokenResponse)
-         .payload;
+      const { access_token: accessToken, refresh_token: refreshToken } = (
+         data as TRefreshTokenResponse
+      ).payload;
       await createSession(accessToken, refreshToken);
       return true;
    } catch (err) {

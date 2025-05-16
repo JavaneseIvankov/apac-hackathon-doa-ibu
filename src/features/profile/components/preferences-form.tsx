@@ -6,7 +6,6 @@ import {
    UseFormRegister,
 } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import {
    Card,
    CardHeader,
@@ -19,15 +18,9 @@ import { Checkbox } from '@/shared/components/ui/checkbox';
 import { Label } from '@/shared/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
 import { useState } from 'react';
-
-const preferencesSchema = z.object({
-   travelStyle: z.string(),
-   interests: z.array(z.string()).max(4, 'You can select up to 4 interests.'),
-   accommodations: z.array(z.string()),
-   tripDuration: z.string(),
-});
-
-type PreferencesFormValues = z.infer<typeof preferencesSchema>;
+import { PreferencesFormValues, preferencesSchema } from '@/features/auth/dto';
+import { useAddPreferencesMutation, useGetProfileQuery } from '../query';
+import { Loader2 } from 'lucide-react';
 
 function TravelStyle({ control }: { control: Control<PreferencesFormValues> }) {
    return (
@@ -189,9 +182,46 @@ function TripDuration({
    );
 }
 
-export function PreferencesForm() {
-   const [isUpdating, setIsUpdating] = useState(false);
+function TripBudget({ control }: { control: Control<PreferencesFormValues> }) {
+   return (
+      <div className="space-y-4">
+         <Label>Typical Trip Budget</Label>
+         <Controller
+            name="tripBudget"
+            control={control}
+            render={({ field }) => (
+               <RadioGroup
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  className="space-y-1"
+               >
+                  {[
+                     { value: 'budget_low', label: 'Low Budget' },
+                     { value: 'budget_medium', label: 'Medium Budget' },
+                     { value: 'budget_high', label: 'High Budget' },
+                  ].map((option) => (
+                     <Label
+                        key={option.value}
+                        className="flex items-center space-x-2"
+                     >
+                        <RadioGroupItem value={option.value} />
+                        <span>{option.label}</span>
+                     </Label>
+                  ))}
+               </RadioGroup>
+            )}
+         />
+      </div>
+   );
+}
+
+export function PreferencesForm({
+   defaultPreferences,
+}: {
+   defaultPreferences: PreferencesFormValues;
+}) {
    const [preferencesSuccess, setPreferencesSuccess] = useState(false);
+   const { mutate: addPreferences, isPending } = useAddPreferencesMutation();
 
    const {
       register,
@@ -201,20 +231,21 @@ export function PreferencesForm() {
    } = useForm<PreferencesFormValues>({
       resolver: zodResolver(preferencesSchema),
       defaultValues: {
-         travelStyle: 'balanced',
-         interests: [],
-         accommodations: [],
-         tripDuration: '1_week',
+         travelStyle: defaultPreferences.travelStyle ?? 'balanced',
+         interests: defaultPreferences.interests ?? [],
+         accommodations: defaultPreferences.accommodations ?? [],
+         tripDuration: defaultPreferences.tripDuration ?? '1_week',
+         tripBudget: defaultPreferences.tripBudget ?? 'budget_medium',
       },
    });
 
    const onSubmit = (data: PreferencesFormValues) => {
-      setIsUpdating(true);
       setPreferencesSuccess(false);
+      addPreferences(data);
 
       // Simulate API call
       setTimeout(() => {
-         setIsUpdating(false);
+         // setIsUpdating(false);
          setPreferencesSuccess(true);
          console.log('Preferences data:', data);
       }, 1000);
@@ -234,8 +265,9 @@ export function PreferencesForm() {
                <Interests control={control} errors={errors} />
                <AccommodationPreferences register={register} />
                <TripDuration control={control} />
-               <Button type="submit" disabled={isUpdating}>
-                  {isUpdating ? 'Saving...' : 'Save Preferences'}
+               <TripBudget control={control} />
+               <Button type="submit" disabled={isPending}>
+                  {isPending ? 'Saving...' : 'Save Preferences'}
                </Button>
                {preferencesSuccess && (
                   <p className="text-green-500 text-sm">

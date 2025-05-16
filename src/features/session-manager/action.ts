@@ -22,6 +22,15 @@ async function _getSession() {
    return session;
 }
 
+export async function refreshSession(
+   accessToken: string,
+   refreshToken: string
+) {
+   const session = await _getSession();
+   session.destroy();
+   createSession(accessToken, refreshToken);
+}
+
 export async function createSession(accessToken: string, refreshToken: string) {
    const session = await _getSession();
    const decoded = decodeToken(accessToken);

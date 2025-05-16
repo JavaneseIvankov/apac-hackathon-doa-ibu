@@ -9,11 +9,12 @@ import {
    CardContent,
 } from '@/shared/components/ui/card';
 import { Button } from '@/shared/components/ui/button';
-import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { Alert, AlertDescription } from '@/shared/components/ui/alert';
 import { Check, X, Loader2 } from 'lucide-react';
 import { useState } from 'react';
+import { PasswordInput } from '@/shared/components/ui/password-input';
+import { useEditProfileMutation } from '../../query';
 
 // Password form schema
 const passwordSchema = z
@@ -30,9 +31,10 @@ const passwordSchema = z
 type PasswordFormValues = z.infer<typeof passwordSchema>;
 
 export function SecurityTab() {
-   const [isUpdating, setIsUpdating] = useState(false);
    const [passwordSuccess, setPasswordSuccess] = useState(false);
    const [passwordError, setPasswordError] = useState<string | null>(null);
+
+   const editProfileMutation = useEditProfileMutation();
 
    const {
       register,
@@ -49,17 +51,28 @@ export function SecurityTab() {
    });
 
    const onSubmit = (data: PasswordFormValues) => {
-      setIsUpdating(true);
       setPasswordSuccess(false);
       setPasswordError(null);
 
-      // Simulate API call
-      setTimeout(() => {
-         setIsUpdating(false);
-         setPasswordSuccess(true);
-         reset();
-         console.log('Password data:', data);
-      }, 1000);
+      editProfileMutation.mutate(
+         {
+            current_password: data.currentPassword,
+            new_password: data.newPassword,
+         },
+         {
+            onSuccess: (res) => {
+               if (res && 'ok' in res && res.ok) {
+                  setPasswordSuccess(true);
+                  reset();
+               } else {
+                  setPasswordError(res?.message || 'Failed to update password');
+               }
+            },
+            onError: (err: Error) => {
+               setPasswordError(err?.message || 'Failed to update password');
+            },
+         }
+      );
    };
 
    return (
@@ -87,7 +100,7 @@ export function SecurityTab() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                <div className="space-y-2">
                   <Label htmlFor="currentPassword">Current password</Label>
-                  <Input
+                  <PasswordInput
                      id="currentPassword"
                      type="password"
                      {...register('currentPassword')}
@@ -100,7 +113,8 @@ export function SecurityTab() {
                </div>
                <div className="space-y-2">
                   <Label htmlFor="newPassword">New password</Label>
-                  <Input
+
+                  <PasswordInput
                      id="newPassword"
                      type="password"
                      {...register('newPassword')}
@@ -113,7 +127,7 @@ export function SecurityTab() {
                </div>
                <div className="space-y-2">
                   <Label htmlFor="confirmPassword">Confirm password</Label>
-                  <Input
+                  <PasswordInput
                      id="confirmPassword"
                      type="password"
                      {...register('confirmPassword')}
@@ -124,8 +138,11 @@ export function SecurityTab() {
                      </p>
                   )}
                </div>
-               <Button type="submit" disabled={isUpdating}>
-                  {isUpdating ? (
+               <Button
+                  type="submit"
+                  disabled={editProfileMutation.status === 'pending'}
+               >
+                  {editProfileMutation.status === 'pending' ? (
                      <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving
                         changes...
